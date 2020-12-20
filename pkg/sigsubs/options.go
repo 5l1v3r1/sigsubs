@@ -30,7 +30,7 @@ type Options struct {
 }
 
 // Version is the current version of subfinder
-const version = `1.0.0`
+const version = "1.0.0"
 
 // ParseOptions is a
 func ParseOptions(options *Options) (*Options, error) {
