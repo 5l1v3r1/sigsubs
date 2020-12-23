@@ -6,8 +6,8 @@ import (
 	"github.com/drsigned/sigsubs/pkg/sources"
 )
 
-// Enum is a
-func Enum(options *Options) (chan sources.Subdomain, error) {
+// Run is a
+func Run(options *Options) (chan sources.Subdomain, error) {
 	var uses, exclusions []string
 
 	use := options.UseSources
@@ -30,13 +30,14 @@ func Enum(options *Options) (chan sources.Subdomain, error) {
 	keys := options.YAMLConfig.GetKeys()
 	results := passiveAgent.Enumerate(options.Domain, &keys)
 
-	subdomains := make(chan sources.Subdomain)
-
 	// Create a unique map for filtering out duplicate subdomains
 	uniqueMap := make(map[string]sources.Subdomain)
 
 	// Create a map to track source for each subdomain
 	sourceMap := make(map[string]map[string]struct{})
+
+	// all subdomains
+	subdomains := make(chan sources.Subdomain)
 
 	go func() {
 		defer close(subdomains)
