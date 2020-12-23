@@ -14,9 +14,10 @@ type Configuration struct {
 	// Version indicates the version of subfinder installed.
 	Version string `yaml:"version"`
 	// Sources contains a list of sources to use for enumeration
-	Sources []string `yaml:"sources,omitempty"`
+	Sources []string `yaml:"sources"`
 	Keys    struct {
-		Chaos []string `yaml:"chaos"`
+		Chaos  []string `yaml:"chaos"`
+		GitHub []string `yaml:"github"`
 	}
 }
 
@@ -29,39 +30,37 @@ type Options struct {
 	YAMLConfig Configuration
 }
 
-// Version is the current version of subfinder
-const version = "1.0.0"
-
 // ParseOptions is a
 func ParseOptions(options *Options) (*Options, error) {
-	dir, err := os.UserHomeDir()
+	directory, err := os.UserHomeDir()
 	if err != nil {
 		return options, err
 	}
 
-	confPath := dir + "/.config/sigsubs/conf.yaml"
+	version := "1.0.0"
+	configPath := directory + "/.config/sigsubs/conf.yaml"
 
-	if _, err := os.Stat(confPath); os.IsNotExist(err) {
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		configuration := Configuration{
 			Version: version,
 			Sources: sources.All,
 		}
 
-		directory, _ := path.Split(confPath)
+		directory, _ := path.Split(configPath)
 
 		err := makeDirectory(directory)
 		if err != nil {
 			return options, err
 		}
 
-		err = configuration.MarshalWrite(confPath)
+		err = configuration.MarshalWrite(configPath)
 		if err != nil {
 			return options, err
 		}
 
 		options.YAMLConfig = configuration
 	} else {
-		configuration, err := UnmarshalRead(confPath)
+		configuration, err := UnmarshalRead(configPath)
 		if err != nil {
 			return options, err
 		}
@@ -70,7 +69,7 @@ func ParseOptions(options *Options) (*Options, error) {
 			configuration.Sources = sources.All
 			configuration.Version = version
 
-			err := configuration.MarshalWrite(confPath)
+			err := configuration.MarshalWrite(configPath)
 			if err != nil {
 				return options, err
 			}
@@ -96,7 +95,7 @@ func makeDirectory(directory string) error {
 }
 
 // MarshalWrite writes the marshaled yaml config to disk
-func (c *Configuration) MarshalWrite(file string) error {
+func (config *Configuration) MarshalWrite(file string) error {
 	f, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		return err
@@ -105,7 +104,7 @@ func (c *Configuration) MarshalWrite(file string) error {
 	// Indent the spaces too
 	enc := yaml.NewEncoder(f)
 	enc.SetIndent(4)
-	err = enc.Encode(&c)
+	err = enc.Encode(&config)
 	f.Close()
 	return err
 }
@@ -129,11 +128,16 @@ func UnmarshalRead(file string) (Configuration, error) {
 // GetKeys gets the API keys from config file and creates a Keys struct
 // We use random selection of api keys from the list of keys supplied.
 // Keys that require 2 options are separated by colon (:).
-func (c *Configuration) GetKeys() sources.Keys {
+func (config *Configuration) GetKeys() sources.Keys {
 	keys := sources.Keys{}
 
-	if len(c.Keys.Chaos) > 0 {
-		keys.Chaos = c.Keys.Chaos[rand.Intn(len(c.Keys.Chaos))]
+	chaosKeysCount := len(config.Keys.Chaos)
+	if chaosKeysCount > 0 {
+		keys.Chaos = config.Keys.Chaos[rand.Intn(chaosKeysCount)]
+	}
+
+	if len(config.Keys.GitHub) > 0 {
+		keys.GitHub = config.Keys.GitHub
 	}
 
 	return keys

@@ -24,7 +24,8 @@ type Source interface {
 
 // Keys contains the current API Keys we have in store
 type Keys struct {
-	Chaos string `json:"chaos"`
+	Chaos  string   `json:"chaos"`
+	GitHub []string `json:"github"`
 }
 
 // Session is the option passed to the source, an option is created

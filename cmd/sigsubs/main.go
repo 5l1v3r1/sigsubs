@@ -68,13 +68,13 @@ func init() {
 }
 
 func main() {
-	if !co.silent {
-		banner()
-	}
-
 	options, err := sigsubs.ParseOptions(&so)
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+	if !co.silent {
+		banner()
 	}
 
 	if co.listSources {
@@ -106,8 +106,12 @@ func main() {
 		fmt.Println("")
 	}
 
-	results, _ := sigsubs.Enum(options)
-	for n := range results {
+	subdomains, err := sigsubs.Run(options)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for n := range subdomains {
 		if co.silent {
 			fmt.Println(n.Value)
 		} else {

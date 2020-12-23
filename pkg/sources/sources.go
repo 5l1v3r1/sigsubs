@@ -9,6 +9,7 @@ var All = []string{
 	"certspotterv0",
 	"chaos",
 	"crtsh",
+	"github",
 	"hackertarget",
 	"rapiddns",
 	"riddler",
