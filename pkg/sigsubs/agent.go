@@ -11,6 +11,7 @@ import (
 	"github.com/drsigned/sigsubs/pkg/sources/certspotterv0"
 	"github.com/drsigned/sigsubs/pkg/sources/chaos"
 	"github.com/drsigned/sigsubs/pkg/sources/crtsh"
+	"github.com/drsigned/sigsubs/pkg/sources/github"
 	"github.com/drsigned/sigsubs/pkg/sources/hackertarget"
 	"github.com/drsigned/sigsubs/pkg/sources/rapiddns"
 	"github.com/drsigned/sigsubs/pkg/sources/riddler"
@@ -52,6 +53,8 @@ func NewAgent(uses, exclusions []string) *Agent {
 			agent.sources[source] = &chaos.Source{}
 		case "crtsh":
 			agent.sources[source] = &crtsh.Source{}
+		case "github":
+			agent.sources[source] = &github.Source{}
 		case "hackertarget":
 			agent.sources[source] = &hackertarget.Source{}
 		case "rapiddns":
