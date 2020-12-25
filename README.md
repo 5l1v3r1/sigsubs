@@ -6,12 +6,40 @@ sigsubs is a vertical correlation(subdomain discovery) tool. It gathers a list o
 
 ## Resources
 
+* [Usage](#usage)
 * [Installation](#installation)
     * [From Binary](#from-binary)
     * [From source](#from-source)
     * [From github](#from-github)
-* [Usage](#usage)
+* [Post Installation](#post-installation)
 * [Contribution](#contribution)
+
+## Usage
+
+To display help message for sigsubs use the `-h` flag:
+
+```
+$ sigsubs -h
+
+     _                 _         
+ ___(_) __ _ ___ _   _| |__  ___ 
+/ __| |/ _` / __| | | | '_ \/ __|
+\__ \ | (_| \__ \ |_| | |_) \__ \
+|___/_|\__, |___/\__,_|_.__/|___/ V1.2.0
+       |___/
+
+USAGE:
+  sigsubs [OPTIONS]
+
+OPTIONS:
+  -d                domain to find subdomains for
+  -sE               comma separated list of sources to exclude
+  -sL               list all the sources available
+  -nC               no color mode
+  -silent           silent mode: output subdomains only
+  -sU               comma separated list of sources to use
+
+```
 
 ## Installation
 
@@ -33,32 +61,44 @@ $ GO111MODULE=on go get -u -v github.com/drsigned/sigsubs/cmd/sigsubs
 $ git clone https://github.com/drsigned/sigsubs.git; cd sigsubs/cmd/sigsubs/; go build; mv sigsubs /usr/local/bin/; sigsubs -h
 ```
 
-## Usage
+## Post Installation
 
-To display help message for sigsubs use the `-h` flag:
+sigsubs will work after [installation](#installation). However, to configure sigsubs to work with certain services you will need to have setup API keys. Currently these services include:
 
+* chaos
+* github
+
+The API keys are stored in the `$HOME/.config/sigsubs/conf.yaml` file - created upon first run - and uses the YAML format. Multiple API keys can be specified for each of these services.
+
+Example:
+
+```yaml
+version: 1.2.0
+sources:
+    - alienvault
+    - anubis
+    - bufferover
+    - cebaidu
+    - certspotterv0
+    - chaos
+    - crtsh
+    - github
+    - hackertarget
+    - rapiddns
+    - riddler
+    - sublist3r
+    - threatcrowd
+    - threatminer
+    - urlscan
+    - wayback
+    - ximcx
+keys:
+    chaos:
+        - d23a554bbc1aabb208c9acfbd2dd41ce7fc9db39asdsd54bbc1aabb208c9acfb
+    github:
+        - d23a554bbc1aabb208c9acfbd2dd41ce7fc9db39
+        - asdsd54bbc1aabb208c9acfbd2dd41ce7fc9db39
 ```
-$ sigsubs -h
-
-     _                 _         
- ___(_) __ _ ___ _   _| |__  ___ 
-/ __| |/ _` / __| | | | '_ \/ __|
-\__ \ | (_| \__ \ |_| | |_) \__ \
-|___/_|\__, |___/\__,_|_.__/|___/ V1.1.0
-       |___/
-
-USAGE:
-  sigsubs [OPTIONS]
-
-OPTIONS:
-  -d                domain to find subdomains for
-  -exclude          comma separated list of sources to exclude
-  -ls               list all the sources available
-  -nc               no color mode
-  -s                silent mode: output subdomains only
-  -use              comma separated list of sources to use
-```
-
 ## Contribution
 
 [Issues](https://github.com/drsigned/sigsubs/issues) and [Pull Requests](https://github.com/drsigned/sigsubs/pulls) are welcome! 

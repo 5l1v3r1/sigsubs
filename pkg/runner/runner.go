@@ -1,49 +1,56 @@
-package sigsubs
+package runner
 
 import (
 	"strings"
 
+	"github.com/drsigned/sigsubs/pkg/agent"
 	"github.com/drsigned/sigsubs/pkg/sources"
 )
 
-// Run is a
-func Run(options *Options) (chan sources.Subdomain, error) {
+// Runner is
+type Runner struct {
+	Options *Options
+	Agent   *agent.Agent
+}
+
+// New is
+func New(options *Options) *Runner {
 	var uses, exclusions []string
 
-	use := options.UseSources
-	exclude := options.ExcludeSources
-
-	// Add sources to use
-	if use != "" {
-		uses = append(uses, strings.Split(use, ",")...)
+	if options.SourcesUse != "" {
+		uses = append(uses, strings.Split(options.SourcesUse, ",")...)
 	} else {
-		uses = append(uses, options.YAMLConfig.Sources...)
+		uses = append(uses, sources.All...)
 	}
 
-	// Add sources to exclude
-	if exclude != "" {
-		exclusions = append(exclusions, strings.Split(exclude, ",")...)
+	if options.SourcesExclude != "" {
+		exclusions = append(exclusions, strings.Split(options.SourcesExclude, ",")...)
 	}
 
-	passiveAgent := NewAgent(uses, exclusions)
+	return &Runner{
+		Options: options,
+		Agent:   agent.New(uses, exclusions),
+	}
+}
 
-	keys := options.YAMLConfig.GetKeys()
-	results := passiveAgent.Enumerate(options.Domain, &keys)
+// Run is a
+func (runner *Runner) Run() (chan sources.Subdomain, error) {
+	// all subdomains
+	subdomains := make(chan sources.Subdomain)
 
 	// Create a unique map for filtering out duplicate subdomains
 	uniqueMap := make(map[string]sources.Subdomain)
-
 	// Create a map to track source for each subdomain
 	sourceMap := make(map[string]map[string]struct{})
 
-	// all subdomains
-	subdomains := make(chan sources.Subdomain)
+	keys := runner.Options.YAMLConfig.GetKeys()
+	results := runner.Agent.Run(runner.Options.Domain, &keys)
 
 	go func() {
 		defer close(subdomains)
 
 		for result := range results {
-			if !strings.HasSuffix(result.Value, "."+options.Domain) {
+			if !strings.HasSuffix(result.Value, "."+runner.Options.Domain) {
 				continue
 			}
 

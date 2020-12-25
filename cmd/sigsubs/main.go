@@ -9,12 +9,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/drsigned/sigsubs/pkg/sigsubs"
+	"github.com/drsigned/sigsubs/pkg/runner"
 	"github.com/logrusorgru/aurora/v3"
 )
 
 type options struct {
-	listSources bool
+	sourcesList bool
 	noColor     bool
 	silent      bool
 	verbosity   int
@@ -22,7 +22,7 @@ type options struct {
 
 var (
 	co options
-	so sigsubs.Options
+	so runner.Options
 	au aurora.Aurora
 )
 
@@ -32,18 +32,18 @@ func banner() {
  ___(_) __ _ ___ _   _| |__  ___ 
 / __| |/ _`+"`"+` / __| | | | '_ \/ __|
 \__ \ | (_| \__ \ |_| | |_) \__ \
-|___/_|\__, |___/\__,_|_.__/|___/ V1.1.0
+|___/_|\__, |___/\__,_|_.__/|___/ V1.2.0
        |___/
 `).Bold())
 }
 
 func init() {
 	flag.StringVar(&so.Domain, "d", "", "")
-	flag.StringVar(&so.ExcludeSources, "exclude", "", "")
-	flag.BoolVar(&co.listSources, "ls", false, "")
-	flag.BoolVar(&co.noColor, "nc", false, "")
-	flag.BoolVar(&co.silent, "s", false, "")
-	flag.StringVar(&so.UseSources, "use", "", "")
+	flag.StringVar(&so.SourcesExclude, "sE", "", "")
+	flag.BoolVar(&co.sourcesList, "sL", false, "")
+	flag.BoolVar(&co.noColor, "nC", false, "")
+	flag.BoolVar(&co.silent, "silent", false, "")
+	flag.StringVar(&so.SourcesUse, "sU", "", "")
 
 	flag.Usage = func() {
 		banner()
@@ -53,11 +53,11 @@ func init() {
 
 		h += "\nOPTIONS:\n"
 		h += "  -d                domain to find subdomains for\n"
-		h += "  -exclude          comma separated list of sources to exclude\n"
-		h += "  -ls               list all the sources available\n"
-		h += "  -nc               no color mode\n"
-		h += "  -s                silent mode: output subdomains only\n"
-		h += "  -use              comma separated list of sources to use\n"
+		h += "  -sE               comma separated list of sources to exclude\n"
+		h += "  -sL               list all the sources available\n"
+		h += "  -nC               no color mode\n"
+		h += "  -silent           silent mode: output subdomains only\n"
+		h += "  -sU               comma separated list of sources to use\n\n"
 
 		fmt.Fprintf(os.Stderr, h)
 	}
@@ -68,7 +68,7 @@ func init() {
 }
 
 func main() {
-	options, err := sigsubs.ParseOptions(&so)
+	options, err := runner.ParseOptions(&so)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -77,7 +77,7 @@ func main() {
 		banner()
 	}
 
-	if co.listSources {
+	if co.sourcesList {
 		fmt.Println("[", au.BrightBlue("INF"), "] current list of the available", au.Underline(strconv.Itoa(len(options.YAMLConfig.Sources))+" sources").Bold())
 		fmt.Println("[", au.BrightBlue("INF"), "] sources marked with an * needs key or token")
 		fmt.Println("")
@@ -106,7 +106,9 @@ func main() {
 		fmt.Println("")
 	}
 
-	subdomains, err := sigsubs.Run(options)
+	runner := runner.New(options)
+
+	subdomains, err := runner.Run()
 	if err != nil {
 		log.Fatalln(err)
 	}

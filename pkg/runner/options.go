@@ -1,4 +1,4 @@
-package sigsubs
+package runner
 
 import (
 	"math/rand"
@@ -24,8 +24,8 @@ type Configuration struct {
 // Options is the structure of the options expected
 type Options struct {
 	Domain         string
-	ExcludeSources string
-	UseSources     string
+	SourcesExclude string
+	SourcesUse     string
 
 	YAMLConfig Configuration
 }
@@ -37,7 +37,7 @@ func ParseOptions(options *Options) (*Options, error) {
 		return options, err
 	}
 
-	version := "1.1.0"
+	version := "1.2.0"
 	configPath := directory + "/.config/sigsubs/conf.yaml"
 
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {

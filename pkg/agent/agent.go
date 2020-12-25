@@ -1,4 +1,4 @@
-package sigsubs
+package agent
 
 import (
 	"sync"
@@ -30,8 +30,8 @@ type Agent struct {
 	sources map[string]sources.Source
 }
 
-// NewAgent creates a new agent for passive subdomain discovery
-func NewAgent(uses, exclusions []string) *Agent {
+// New creates a new agent for passive subdomain discovery
+func New(uses, exclusions []string) *Agent {
 	agent := &Agent{
 		sources: make(map[string]sources.Source),
 	}
@@ -84,8 +84,8 @@ func NewAgent(uses, exclusions []string) *Agent {
 	return agent
 }
 
-// Enumerate enumerates all the subdomains for a given domain
-func (agent *Agent) Enumerate(domain string, keys *sources.Keys) chan sources.Subdomain {
+// Run enumerates all the subdomains for a given domain
+func (agent *Agent) Run(domain string, keys *sources.Keys) chan sources.Subdomain {
 	results := make(chan sources.Subdomain)
 
 	go func() {
