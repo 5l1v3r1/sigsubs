@@ -52,12 +52,12 @@ func init() {
 		h += "  sigsubs [OPTIONS]\n"
 
 		h += "\nOPTIONS:\n"
-		h += "  -d                domain to find subdomains for\n"
-		h += "  -sE               comma separated list of sources to exclude\n"
-		h += "  -sL               list all the sources available\n"
-		h += "  -nC               no color mode\n"
-		h += "  -silent           silent mode: output subdomains only\n"
-		h += "  -sU               comma separated list of sources to use\n\n"
+		h += "  -d          domain to find subdomains for\n"
+		h += "  -sE         comma(,) separated list of sources to exclude\n"
+		h += "  -sL         list all the sources available\n"
+		h += "  -nC         no color mode\n"
+		h += "  -silent     silent mode: output subdomains only\n"
+		h += "  -sU         comma(,) separated list of sources to use\n\n"
 
 		fmt.Fprintf(os.Stderr, h)
 	}
