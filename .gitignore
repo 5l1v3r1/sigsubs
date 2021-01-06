@@ -2,6 +2,10 @@
 
 notes.txt
 
+# Executable
+
+cmd/sigsubs/sigsubs
+
 # Test Configuration
 
 conf.yaml

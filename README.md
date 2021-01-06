@@ -1,8 +1,8 @@
 # sigsubs
 
-![made with go](https://img.shields.io/badge/made%20with-Go-0040ff.svg) ![maintenance](https://img.shields.io/badge/maintained%3F-yes-0040ff.svg) [![open issues](https://img.shields.io/github/issues-raw/drsigned/sigsubs.svg?style=flat&color=0040ff)](https://github.com/drsigned/sigsubs/issues?q=is:issue+is:open) [![closed issues](https://img.shields.io/github/issues-closed-raw/drsigned/sigsubs.svg?style=flat&color=0040ff)](https://github.com/drsigned/sigsubs/issues?q=is:issue+is:closed) [![license](https://img.shields.io/badge/License-MIT-gray.svg?colorB=0040FF)](https://github.com/drsigned/sigsubs/blob/master/LICENSE) [![twitter](https://img.shields.io/badge/twitter-@drsigned-0040ff.svg)](https://twitter.com/drsigned)
+[![release](https://img.shields.io/github/release/drsigned/sigsubs?style=flat&color=0040ff)](https://github.com/drsigned/sigsubs/releases) ![maintenance](https://img.shields.io/badge/maintained%3F-yes-0040ff.svg) [![open issues](https://img.shields.io/github/issues-raw/drsigned/sigsubs.svg?style=flat&color=0040ff)](https://github.com/drsigned/sigsubs/issues?q=is:issue+is:open) [![closed issues](https://img.shields.io/github/issues-closed-raw/drsigned/sigsubs.svg?style=flat&color=0040ff)](https://github.com/drsigned/sigsubs/issues?q=is:issue+is:closed) [![license](https://img.shields.io/badge/license-MIT-gray.svg?colorB=0040FF)](https://github.com/drsigned/sigsubs/blob/master/LICENSE) [![twitter](https://img.shields.io/badge/twitter-@drsigned-0040ff.svg)](https://twitter.com/drsigned)
 
-sigsubs is a vertical correlation(subdomain discovery) tool. It gathers a list of subdomains passively using various online sources.
+sigsubs is a subdomain discovery tool - it gathers a list of subdomains passively using various online sources.
 
 ## Resources
 
@@ -38,8 +38,9 @@ OPTIONS:
   -nC               no color mode
   -silent           silent mode: output subdomains only
   -sU               comma separated list of sources to use
-
 ```
+
+**DESCLAIMER:** wayback and github sources are a bit slow.
 
 ## Installation
 
@@ -49,7 +50,7 @@ You can download the pre-built binary for your platform from this repository's [
 
 #### From Source
 
-sigsubs requires go1.14+ to install successfully. Run the following command to get the repo
+sigsubs requires **go1.14+** to install successfully. Run the following command to get the repo
 
 ```bash
 $ GO111MODULE=on go get -u -v github.com/drsigned/sigsubs/cmd/sigsubs
@@ -58,7 +59,11 @@ $ GO111MODULE=on go get -u -v github.com/drsigned/sigsubs/cmd/sigsubs
 #### From Github
 
 ```bash
-$ git clone https://github.com/drsigned/sigsubs.git; cd sigsubs/cmd/sigsubs/; go build; mv sigsubs /usr/local/bin/; sigsubs -h
+▶ git clone https://github.com/drsigned/sigsubs.git
+▶ cd sigsubs/cmd/sigsubs/
+▶ go build . 
+▶ mv sigsubs /usr/local/bin/
+▶ sigsubs -h
 ```
 
 ## Post Installation
