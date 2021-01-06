@@ -25,7 +25,7 @@ $ sigsubs -h
  ___(_) __ _ ___ _   _| |__  ___ 
 / __| |/ _` / __| | | | '_ \/ __|
 \__ \ | (_| \__ \ |_| | |_) \__ \
-|___/_|\__, |___/\__,_|_.__/|___/ V1.2.0
+|___/_|\__, |___/\__,_|_.__/|___/ V1.3.0
        |___/
 
 USAGE:
@@ -78,7 +78,7 @@ The API keys are stored in the `$HOME/.config/sigsubs/conf.yaml` file - created 
 Example:
 
 ```yaml
-version: 1.2.0
+version: 1.3.0
 sources:
     - alienvault
     - anubis
@@ -91,6 +91,7 @@ sources:
     - hackertarget
     - rapiddns
     - riddler
+    - sonar
     - sublist3r
     - threatcrowd
     - threatminer

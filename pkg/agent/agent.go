@@ -15,6 +15,7 @@ import (
 	"github.com/drsigned/sigsubs/pkg/sources/hackertarget"
 	"github.com/drsigned/sigsubs/pkg/sources/rapiddns"
 	"github.com/drsigned/sigsubs/pkg/sources/riddler"
+	"github.com/drsigned/sigsubs/pkg/sources/sonar"
 	"github.com/drsigned/sigsubs/pkg/sources/sublist3r"
 	"github.com/drsigned/sigsubs/pkg/sources/threatcrowd"
 	"github.com/drsigned/sigsubs/pkg/sources/threatminer"
@@ -61,6 +62,8 @@ func New(uses, exclusions []string) *Agent {
 			agent.sources[source] = &rapiddns.Source{}
 		case "riddler":
 			agent.sources[source] = &riddler.Source{}
+		case "sonar":
+			agent.sources[source] = &sonar.Source{}
 		case "sublist3r":
 			agent.sources[source] = &sublist3r.Source{}
 		case "threatcrowd":

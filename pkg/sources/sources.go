@@ -13,6 +13,7 @@ var All = []string{
 	"hackertarget",
 	"rapiddns",
 	"riddler",
+	"sonar",
 	"sublist3r",
 	"threatcrowd",
 	"threatminer",
